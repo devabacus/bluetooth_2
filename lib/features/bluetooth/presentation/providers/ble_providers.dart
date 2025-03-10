@@ -12,6 +12,9 @@ Stream<BluetoothAdapterState> bleState(Ref ref) {
 
 @riverpod
 class ScanResults extends _$ScanResults {
+
+  BluetoothDevice? _device;
+
   @override
   Stream<List<ScanResult>> build() {
     _requestPermission();
@@ -22,28 +25,26 @@ class ScanResults extends _$ScanResults {
     Duration timeout = const Duration(seconds: 10),
   }) async {
     try {
-      _bleTurnOnCheck();
       await FlutterBluePlus.startScan(timeout: timeout);
     } catch (e) {
       print("ошибка при сканировании $e");
     }
   }
 
-
-
-
-
-  Future<void> _bleTurnOnCheck() async {
-    final bluetoothState = await ref.read(bleStateProvider.future);
-    if (bluetoothState != BluetoothAdapterState.on) {
-      await FlutterBluePlus.turnOn();
-    }
-    await Future.delayed(Duration(milliseconds: 500));
-    final newState = await ref.read(bleStateProvider.future);
-    if (newState != BluetoothAdapterState.on) {
-      throw Exception("Не удалось включить bluetooth");
-    }
+  Future<void> connect(String deviceId) async {
+      _device = BluetoothDevice.fromId(deviceId);
+      if(_device != null){
+        await _device!.connect();
+      }
   }
+
+Stream<BluetoothConnectionState>? connectedState() {
+      if (_device == null) {
+        return Stream.value(BluetoothConnectionState.disconnected);
+      }
+      return _device!.connectionState;
+    }
+
 
   Future<void> _requestPermission() async {
     await Permission.bluetoothScan.request();
@@ -52,3 +53,31 @@ class ScanResults extends _$ScanResults {
   }
 }
 
+@riverpod
+class ConnectedDevice extends _$ConnectedDevice {
+  BluetoothDevice? _device;
+
+  BluetoothDevice get device {
+    _device ??= BluetoothDevice.fromId(deviceId);
+    return _device!;
+  }
+
+  @override
+  Stream<BluetoothConnectionState> build(String deviceId) {
+    if (deviceId.isEmpty) {
+      return Stream.value(BluetoothConnectionState.disconnected);
+    }
+    return device.connectionState;
+  }
+
+  Future<void> connect() async {
+    if (state.isLoading) return;
+
+    try {
+      await FlutterBluePlus.stopScan();
+      await device.connect();
+    } catch (e) {
+      print("Ошибка при подключении");
+    }
+  }
+}
