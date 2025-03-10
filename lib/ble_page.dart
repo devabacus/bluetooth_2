@@ -16,9 +16,6 @@ class BlePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          // Chip(label: label)
-        ],
         title: Text("Поиск устройств", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.lightBlue,
       ),
