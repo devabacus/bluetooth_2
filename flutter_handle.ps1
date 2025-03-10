@@ -1,7 +1,6 @@
 
 flutter pub add flutter_blue_plus
-
-
+flutter pub add permission_handler
 
 # после обновления пакета
 flutter pub cache clean
