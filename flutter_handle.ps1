@@ -1,4 +1,8 @@
 
+flutter pub add flutter_blue_plus
+
+
+
 # после обновления пакета
 flutter pub cache clean
 flutter clean
