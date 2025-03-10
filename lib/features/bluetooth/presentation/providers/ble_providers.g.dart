@@ -59,174 +59,97 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$connectedDeviceHash() => r'9ae80b844633239bd40cf497cff153d745d51915';
+String _$selectedDeviceHash() => r'ceba553cb1ad86571e732bf6681c9dddf94f4c4d';
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$ConnectedDevice
-    extends BuildlessAutoDisposeStreamNotifier<BluetoothConnectionState> {
-  late final String deviceId;
-
-  Stream<BluetoothConnectionState> build(String deviceId);
-}
-
-/// See also [ConnectedDevice].
-@ProviderFor(ConnectedDevice)
-const connectedDeviceProvider = ConnectedDeviceFamily();
-
-/// See also [ConnectedDevice].
-class ConnectedDeviceFamily
-    extends Family<AsyncValue<BluetoothConnectionState>> {
-  /// See also [ConnectedDevice].
-  const ConnectedDeviceFamily();
-
-  /// See also [ConnectedDevice].
-  ConnectedDeviceProvider call(String deviceId) {
-    return ConnectedDeviceProvider(deviceId);
-  }
-
-  @override
-  ConnectedDeviceProvider getProviderOverride(
-    covariant ConnectedDeviceProvider provider,
-  ) {
-    return call(provider.deviceId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'connectedDeviceProvider';
-}
-
-/// See also [ConnectedDevice].
-class ConnectedDeviceProvider
-    extends
-        AutoDisposeStreamNotifierProviderImpl<
-          ConnectedDevice,
-          BluetoothConnectionState
-        > {
-  /// See also [ConnectedDevice].
-  ConnectedDeviceProvider(String deviceId)
-    : this._internal(
-        () => ConnectedDevice()..deviceId = deviceId,
-        from: connectedDeviceProvider,
-        name: r'connectedDeviceProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$connectedDeviceHash,
-        dependencies: ConnectedDeviceFamily._dependencies,
-        allTransitiveDependencies:
-            ConnectedDeviceFamily._allTransitiveDependencies,
-        deviceId: deviceId,
-      );
-
-  ConnectedDeviceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.deviceId,
-  }) : super.internal();
-
-  final String deviceId;
-
-  @override
-  Stream<BluetoothConnectionState> runNotifierBuild(
-    covariant ConnectedDevice notifier,
-  ) {
-    return notifier.build(deviceId);
-  }
-
-  @override
-  Override overrideWith(ConnectedDevice Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: ConnectedDeviceProvider._internal(
-        () => create()..deviceId = deviceId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        deviceId: deviceId,
-      ),
+/// See also [SelectedDevice].
+@ProviderFor(SelectedDevice)
+final selectedDeviceProvider =
+    AutoDisposeNotifierProvider<SelectedDevice, BluetoothDevice?>.internal(
+      SelectedDevice.new,
+      name: r'selectedDeviceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$selectedDeviceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
     );
-  }
 
-  @override
-  AutoDisposeStreamNotifierProviderElement<
-    ConnectedDevice,
-    BluetoothConnectionState
-  >
-  createElement() {
-    return _ConnectedDeviceProviderElement(this);
-  }
+typedef _$SelectedDevice = AutoDisposeNotifier<BluetoothDevice?>;
+String _$deviceConnectionHash() => r'c42f2a834b5d747deb847ff9a2b77e67528a6a60';
 
-  @override
-  bool operator ==(Object other) {
-    return other is ConnectedDeviceProvider && other.deviceId == deviceId;
-  }
+/// See also [DeviceConnection].
+@ProviderFor(DeviceConnection)
+final deviceConnectionProvider = AutoDisposeStreamNotifierProvider<
+  DeviceConnection,
+  BluetoothConnectionState
+>.internal(
+  DeviceConnection.new,
+  name: r'deviceConnectionProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$deviceConnectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, deviceId.hashCode);
+typedef _$DeviceConnection =
+    AutoDisposeStreamNotifier<BluetoothConnectionState>;
+String _$bleServiceHash() => r'56339222f73f09ff9bd50232ed4834f9b4557327';
 
-    return _SystemHash.finish(hash);
-  }
-}
+/// See also [BleService].
+@ProviderFor(BleService)
+final bleServiceProvider =
+    AutoDisposeNotifierProvider<BleService, BluetoothService?>.internal(
+      BleService.new,
+      name: r'bleServiceProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$bleServiceHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ConnectedDeviceRef
-    on AutoDisposeStreamNotifierProviderRef<BluetoothConnectionState> {
-  /// The parameter `deviceId` of this provider.
-  String get deviceId;
-}
+typedef _$BleService = AutoDisposeNotifier<BluetoothService?>;
+String _$characteristicNotificationsHash() =>
+    r'e057291070b34e6c5f903eaa30c1c759674bbf4b';
 
-class _ConnectedDeviceProviderElement
-    extends
-        AutoDisposeStreamNotifierProviderElement<
-          ConnectedDevice,
-          BluetoothConnectionState
-        >
-    with ConnectedDeviceRef {
-  _ConnectedDeviceProviderElement(super.provider);
+/// See also [CharacteristicNotifications].
+@ProviderFor(CharacteristicNotifications)
+final characteristicNotificationsProvider = AutoDisposeStreamNotifierProvider<
+  CharacteristicNotifications,
+  List<int>
+>.internal(
+  CharacteristicNotifications.new,
+  name: r'characteristicNotificationsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$characteristicNotificationsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-  @override
-  String get deviceId => (origin as ConnectedDeviceProvider).deviceId;
-}
+typedef _$CharacteristicNotifications = AutoDisposeStreamNotifier<List<int>>;
+String _$writeCharacteristicHash() =>
+    r'8eebc4df9fb8e435efb3b137eda9f353a40ec5c1';
 
+/// See also [WriteCharacteristic].
+@ProviderFor(WriteCharacteristic)
+final writeCharacteristicProvider =
+    AutoDisposeNotifierProvider<WriteCharacteristic, bool>.internal(
+      WriteCharacteristic.new,
+      name: r'writeCharacteristicProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$writeCharacteristicHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$WriteCharacteristic = AutoDisposeNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
