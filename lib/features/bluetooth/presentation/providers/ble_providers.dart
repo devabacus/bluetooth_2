@@ -11,13 +11,19 @@ Stream<BluetoothAdapterState> bleState(Ref ref) {
 }
 
 @riverpod
-class ScanResults extends _$ScanResults {
+Future<void> requestBlePermissions(Ref ref) async {
+  await Permission.bluetoothScan.request();
+  await Permission.bluetoothConnect.request();
+  await Permission.location.request();
+}
 
+@riverpod
+class ScanResults extends _$ScanResults {
   BluetoothDevice? _device;
 
   @override
   Stream<List<ScanResult>> build() {
-    _requestPermission();
+    ref.watch(requestBlePermissionsProvider);
     return FlutterBluePlus.scanResults;
   }
 
@@ -31,25 +37,12 @@ class ScanResults extends _$ScanResults {
     }
   }
 
-  Future<void> connect(String deviceId) async {
-      _device = BluetoothDevice.fromId(deviceId);
-      if(_device != null){
-        await _device!.connect();
-      }
-  }
-
-Stream<BluetoothConnectionState>? connectedState() {
-      if (_device == null) {
-        return Stream.value(BluetoothConnectionState.disconnected);
-      }
-      return _device!.connectionState;
+  Future<void> stopScan() async {
+    try {
+      await FlutterBluePlus.stopScan();
+    } catch (e) {
+      print("ошибка при остановке сканировании $e");
     }
-
-
-  Future<void> _requestPermission() async {
-    await Permission.bluetoothScan.request();
-    await Permission.bluetoothConnect.request();
-    await Permission.location.request();
   }
 }
 
@@ -76,6 +69,14 @@ class ConnectedDevice extends _$ConnectedDevice {
     try {
       await FlutterBluePlus.stopScan();
       await device.connect();
+    } catch (e) {
+      print("Ошибка при подключении");
+    }
+  }
+
+  Future<void> disconnect() async {
+    try {
+      await device.disconnect();
     } catch (e) {
       print("Ошибка при подключении");
     }

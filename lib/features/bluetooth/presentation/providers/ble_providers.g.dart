@@ -23,7 +23,26 @@ final bleStateProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef BleStateRef = AutoDisposeStreamProviderRef<BluetoothAdapterState>;
-String _$scanResultsHash() => r'c01373cbc720cd0e5ab1081e4274a9542206f76f';
+String _$requestBlePermissionsHash() =>
+    r'd1dbca468b40c90620f6514964d7bf1d79a051b7';
+
+/// See also [requestBlePermissions].
+@ProviderFor(requestBlePermissions)
+final requestBlePermissionsProvider = AutoDisposeFutureProvider<void>.internal(
+  requestBlePermissions,
+  name: r'requestBlePermissionsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$requestBlePermissionsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef RequestBlePermissionsRef = AutoDisposeFutureProviderRef<void>;
+String _$scanResultsHash() => r'f08d538e115006434bde3250488215b94a28d693';
 
 /// See also [ScanResults].
 @ProviderFor(ScanResults)
@@ -40,7 +59,7 @@ final scanResultsProvider =
     );
 
 typedef _$ScanResults = AutoDisposeStreamNotifier<List<ScanResult>>;
-String _$connectedDeviceHash() => r'5e9c6b1538a4a05fcf62fa9dde5ef3d357bc8e32';
+String _$connectedDeviceHash() => r'9ae80b844633239bd40cf497cff153d745d51915';
 
 /// Copied from Dart SDK
 class _SystemHash {

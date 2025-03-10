@@ -8,10 +8,10 @@ class BlePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final adapterState = ref.watch(bleStateProvider);
     final scanResultsStream = ref.watch(scanResultsProvider);
     final scanControl = ref.read(scanResultsProvider.notifier);
+
     // scanControl.startScan();
 
     return Scaffold(
@@ -19,10 +19,10 @@ class BlePage extends ConsumerWidget {
         actions: [
           // Chip(label: label)
         ],
-        title: Text("Поиск устройств", style: TextStyle(color: Colors.white),),
+        title: Text("Поиск устройств", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.lightBlue,
-        ),
-        
+      ),
+
       body: Column(
         children: [
           Expanded(
@@ -40,7 +40,7 @@ class BlePage extends ConsumerWidget {
                               : Text(device.advName),
                       subtitle: Text("${scanResult.device.remoteId}"),
                       trailing: Text(scanResult.rssi.toString()),
-                      onTap: ()=> scanControl.connect(scanResult.device.remoteId.toString()),
+                      onTap: () {},
                     );
                   },
                 );
@@ -59,6 +59,3 @@ class BlePage extends ConsumerWidget {
     );
   }
 }
-
-
-
