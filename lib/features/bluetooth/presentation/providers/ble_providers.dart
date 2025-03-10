@@ -30,13 +30,7 @@ class ScanResults extends _$ScanResults {
   }
 
 
-@riverpod
-class BleConnect extends _$BleConnect {
-  @override
-   build() {
-    return ;
-  }
-}
+
 
 
   Future<void> _bleTurnOnCheck() async {
